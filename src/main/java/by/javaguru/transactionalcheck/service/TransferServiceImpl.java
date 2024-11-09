@@ -23,11 +23,9 @@ public class TransferServiceImpl implements TransferService {
 
     private final TransferRepository transferRepository;
 
-    private final Supplier<TransferService> transferServiceSupplier;
 
-    public TransferServiceImpl(TransferRepository transferRepository, BeanFactory beanFactory) {
+    public TransferServiceImpl(TransferRepository transferRepository) {
         this.transferRepository = transferRepository;
-        this.transferServiceSupplier = () -> beanFactory.getBean(TransferService.class);
     }
 
     @Transactional
@@ -43,7 +41,7 @@ public class TransferServiceImpl implements TransferService {
             transferRepository.save(transferEntity);
 
             LOGGER.info("Transfer method callRemoteServce");
-            this.transferServiceSupplier.get().callRemoteServce();
+            callRemoteServce();
 
 
 
@@ -57,7 +55,6 @@ public class TransferServiceImpl implements TransferService {
     }
 
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void callRemoteServce() {
         LOGGER.info("CallRemoteServce method");
     }
